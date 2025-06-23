@@ -1,0 +1,36 @@
+# Base de données locale
+database/
+
+
+# Fichiers sensibles
+.env
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Cache et logs
+cache/
+logs/
+*.log
+
+# Docker volumes
+docker/mysql/data/
+docker-compose.yml
+
+
+# Composer
+/vendor/
+
+# Node (si jamais utilisé pour le front)
+node_modules/
+dist/
+
+# IDE & éditeurs
+.vscode/
+.idea/
+
+# Autres
+*.bak
+*.swp
+.phpunit.result.cache

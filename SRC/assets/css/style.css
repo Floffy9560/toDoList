@@ -1,0 +1,191 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Times New Roman", Times, serif;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/*
+** Header 
+========= */
+
+header,
+footer {
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    to right,
+    rgba(237, 221, 83, 1) 0%,
+    /* Jaune */ rgba(87, 199, 133, 1) 20%,
+    /* Vert */ rgba(42, 123, 155, 1) 40%,
+    /* Début du bleu */ rgba(42, 123, 155, 1) 60%,
+    /* Fin du bleu */ rgba(87, 199, 133, 1) 80%,
+    /* Vert */ rgba(237, 221, 83, 1) 100% /* Jaune */
+  );
+}
+.menuLaptop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.burgerMenu {
+  display: none;
+}
+#ulNav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+/*
+** Main 
+========= */
+
+main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+  flex: 1;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  padding: 0 5rem;
+  height: 8rem;
+  width: 100%;
+  border-bottom: 2px solid rgba(237, 221, 83, 1);
+}
+
+button {
+  padding: 10px;
+  border: none;
+  box-shadow: 4px 4px 8px black;
+  border-radius: 8px;
+}
+h1 {
+  font-size: 25px;
+}
+h2 {
+  width: auto;
+  text-align: left;
+  padding-left: 20px;
+}
+h3 {
+  width: 100%;
+  padding: 5px;
+  border-bottom: 1px solid black;
+  margin-bottom: 8px;
+}
+a {
+  text-decoration: none;
+  color: navy;
+}
+section {
+  padding: 15px;
+}
+.currentProject {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+.cardProject {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  width: 310px;
+  padding: 10px;
+  border: 2px solid greenyellow;
+}
+input {
+  border: none;
+}
+ul {
+  width: 100%;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  background-color: lavender;
+}
+#finish {
+  background-color: rgb(98, 228, 98);
+}
+#finish:disabled {
+  background-color: white;
+  color: white;
+  box-shadow: none;
+}
+.btnCheck {
+  border: none;
+  box-shadow: none;
+}
+.done {
+  text-decoration: line-through;
+  color: gray;
+}
+
+/*
+** Menu smarphone
+================ */
+@media (max-width: 968px) {
+  .menuLaptop {
+    display: none;
+  }
+  .burgerMenu {
+    display: flex;
+  }
+  .bi-list {
+    font-size: 50px;
+  }
+  #ulNav {
+    display: none; /* caché par défaut sur mobile */
+    flex-direction: column;
+    gap: 35px;
+    position: absolute;
+    top: 5rem;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 9rem);
+    background: linear-gradient(
+      to right,
+      rgba(237, 221, 83, 1) 0%,
+      rgba(87, 199, 133, 1) 20%,
+      rgba(42, 123, 155, 1) 40%,
+      rgba(42, 123, 155, 1) 60%,
+      rgba(87, 199, 133, 1) 80%,
+      rgba(237, 221, 83, 1) 100% /* Jaune */
+    );
+  }
+  #ulNav a {
+    font-size: 21px;
+    color: gainsboro;
+    padding: 10px;
+  }
+}
