@@ -7,7 +7,7 @@
         <form action="" method="POST">
 
             <div class="infos">
-                <input type="text" name="pseudo" placeholder="Pseudo" require>
+                <input type="text" name="pseudo" placeholder="Pseudo" autocomplete="username" require>
                 <?php if (!empty($data['error']['pseudo'])) { ?>
                     <small style="color: red;">
                         <?= $data['error']['pseudo'] ?>
@@ -16,7 +16,7 @@
             </div>
 
             <div class="infos">
-                <input type="text" name="email" placeholder="E-Mail" require>
+                <input type="text" name="email" placeholder="E-Mail" autocomplete="email" require>
                 <?php if (!empty($data['error']['email'])) { ?>
                     <small style="color: red;">
                         <?= $data['error']['email'] ?>
@@ -25,7 +25,9 @@
             </div>
 
             <div class="infos">
-                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="password" id="password" placeholder="Password" autocomplete="current-password" required>
+                <i class="bi bi-eye" id="openEye"></i>
+                <i class="bi bi-eye-slash" id="closeEye"></i>
                 <?php if (!empty($data['error']['password'])): ?>
                     <?php foreach ($data['error']['password'] as $err): ?>
                         <small style="color: red; display: block;">
@@ -34,6 +36,14 @@
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
+            <div class="passwordVerify">
+                <p class="small" data-condition="length">au moins 8 caractères</p>
+                <p class="small" data-condition="uppercase">au moins une majuscule</p>
+                <p class="small" data-condition="lowercase">au moins une minuscule</p>
+                <p class="small" data-condition="digit">au moins un chiffre</p>
+                <p class="small" data-condition="special">au moins un caractère spécial</p>
+            </div>
+            <div id="password-feedback" style="color: crimson; margin-top: 5px;"></div>
             <button type="submit">S'inscrire</button>
 
         </form>

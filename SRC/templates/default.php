@@ -50,7 +50,12 @@
     </footer>
 
     <script src="assets/js/script.js"></script>
-    <script src="<?= $js ?> "></script>
+    <!-- <script src="<?= $js ?> "></script> -->
+    <?php
+    if (!empty($js)) {
+        echo '<script src="' . htmlspecialchars($js) . '"></script>';
+    }
+    ?>
 
 </body>
 

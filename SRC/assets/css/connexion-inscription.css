@@ -27,3 +27,40 @@ input {
   color: red;
   font-size: 20px;
 }
+
+/*
+** Inscription
+=============== */
+.infos {
+  width: 100%;
+  position: relative;
+}
+.passwordVerify {
+  padding: 8px;
+}
+.small {
+  color: #8b0000;
+  position: relative;
+  padding-left: 10px;
+  font-size: 12px;
+}
+.small.valid {
+  color: green;
+}
+.small.valid::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  color: green;
+}
+.bi-eye,
+.bi-eye-slash {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.bi-eye {
+  display: none;
+}
