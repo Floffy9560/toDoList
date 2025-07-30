@@ -32,7 +32,7 @@
         </p>
 
         <p>
-            Pour tout retour ou question : <a href="mailto:contact@monsite.tld">contact@monsite.tld</a>
+            Pour tout retour ou question : <a href="mailto:auvrayflorian@aol.com">auvrayflorian@aol.com</a>
         </p>
 
     </div>

@@ -28,14 +28,13 @@
                 <input type="password" name="password" id="password" placeholder="Password" autocomplete="current-password" required>
                 <i class="bi bi-eye" id="openEye"></i>
                 <i class="bi bi-eye-slash" id="closeEye"></i>
-                <?php if (!empty($data['error']['password'])): ?>
-                    <?php foreach ($data['error']['password'] as $err): ?>
-                        <small style="color: red; display: block;">
-                            <?= htmlspecialchars($err) ?>
-                        </small>
-                    <?php endforeach; ?>
-                <?php endif; ?>
             </div>
+
+            <?php if (!empty($data['error']['password'])): ?>
+                <small style="color: red; display: block;">
+                    <?= 'Mot de passe incorrect, veuillez suivre les consignes.' ?>
+                </small>
+            <?php endif; ?>
             <div class="passwordVerify">
                 <p class="small" data-condition="length">au moins 8 caractères</p>
                 <p class="small" data-condition="uppercase">au moins une majuscule</p>

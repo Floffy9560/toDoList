@@ -16,7 +16,11 @@
             </div>
 
             <div class="infos">
-                <input type="password" name="password" placeholder="Password" autocomplete="current-password" required>
+                <div class="inputPwd">
+                    <input type="password" name="password" placeholder="Password" autocomplete="current-password" id="password" required>
+                    <i class="bi bi-eye" id="openEye"></i>
+                    <i class="bi bi-eye-slash" id="closeEye"></i>
+                </div>
                 <?php if (!empty($data['error']['password'])): ?>
                     <?php foreach ($data['error']['password'] as $err): ?>
                         <small style="color: red; display: block;">
@@ -44,5 +48,6 @@
 render('default', true, [
     'title' => "Connexion",
     'style' => "assets/css/connexion-inscription.css",
+    'js' => "assets/js/connexion.js",
     'content' => ob_get_clean(),
 ]); ?>
