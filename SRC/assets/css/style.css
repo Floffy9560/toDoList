@@ -163,6 +163,16 @@ ul {
 }
 
 /*
+** Footer 
+========== */
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*
 ** Menu smarphone
 ================ */
 @media (max-width: 968px) {

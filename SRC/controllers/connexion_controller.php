@@ -1,45 +1,53 @@
 <?php
-// require_once 'models/User.php';
-
-
-// if (!empty($_POST['pseudo']) && !empty($_POST['password'])) {
-
-//       $pseudo = $_POST['pseudo'];
-//       $password = $_POST['password'];
-//       $user = new User();
-//       $user->verifyMailAndPassword($pseudo, $password);
-//       $_SESSION['idUser'] = $user->getIdUser($pseudo);
-//       $_SESSION['pseudo'] = $user->getPseudo();
-//       render('index', false);
-// }
-
-// render('connexion', false);
 require_once 'models/User.php';
 require_once 'models/Security.php';
 
-$error = null; // Défini par défaut
+$user = new User();
+$error = null;
 
 if (!empty($_POST['pseudo']) && !empty($_POST['password'])) {
-
       $pseudo = Security::cleanInput($_POST['pseudo']);
       $password = trim($_POST['password']);
 
-      if (!Security::validatePseudo($pseudo)) {
-            $error = "Pseudo invalide.";
-            // afficher erreur
-      }
+      try {
+            if (!Security::validatePseudo($pseudo)) {
+                  throw new Exception("Pseudo invalide.");
+            }
 
-      $user = new User();
+            // On récupère les données utilisateur
+            $userData = $user->getUserByPseudo($pseudo);
 
-      if ($user->verifyMailAndPassword($pseudo, $password)) {
-            $_SESSION['idUser'] = $user->getIdUser($pseudo);
-            $_SESSION['pseudo'] = $pseudo; // Ou récupéré via une méthode si besoin
-            header('location: index');
-            exit; // Pour éviter que la suite du script s'exécute
-      } else {
-            $error = "Identifiants incorrects.";
+            if ($userData) {
+                  $now = new DateTime();
+                  $lastAttempt = new DateTime($userData['last_attempt'] ?? '2000-01-01 00:00:00');
+                  $diff = $now->getTimestamp() - $lastAttempt->getTimestamp();
+
+                  // Vérifie le blocage
+                  if ($userData['failed_attempts'] >= 5 && $diff < 600) {
+                        $error = "Trop de tentatives. Réessayez dans 10 minutes.";
+                        render('connexion', false, ['error' => $error]);
+                        return;
+                  }
+
+                  // Vérifie le mot de passe
+                  if (password_verify($password, $userData['password'])) {
+                        $user->resetLoginAttempts($pseudo); // reset compteur
+                        $_SESSION['idUser'] = $user->getIdUser($pseudo);
+                        $_SESSION['pseudo'] = $pseudo;
+                        header('Location: index');
+                        exit;
+                  } else {
+                        $user->recordFailedAttempt($pseudo);
+                        throw new Exception("Identifiants incorrects.");
+                  }
+            } else {
+                  throw new Exception("Utilisateur introuvable.");
+            }
+      } catch (Exception $e) {
+            $error = $e->getMessage();
+            render('connexion', false, ['error' => $error]);
+            return;
       }
 }
-render('connexion', false, [
-      'error' => $error,
-]);
+
+render('connexion', false, ['error' => $error]);

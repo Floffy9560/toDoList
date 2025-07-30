@@ -3,11 +3,21 @@
 <section>
 
     <?php
+
+    $bloque = isset($error) && str_starts_with($error, 'Trop de tentatives');
+
+    if (!empty($error)): ?>
+        <div class="error-message">
+            <?= htmlspecialchars($error) ?>
+        </div>
+    <?php endif; ?>
+
+    <?php
     if (!isset($_SESSION['pseudo'])) : ?>
         <form action="" method="POST">
 
             <div class="infos">
-                <input type="text" name="pseudo" placeholder="Pseudo" autocomplete="username" required>
+                <input type="text" name="pseudo" placeholder="Pseudo" autocomplete="username" <?= $bloque ? 'disabled' : '' ?> required>
                 <?php if (!empty($data['error']['pseudo'])) : ?>
                     <small style="color: red;">
                         <?= htmlspecialchars($data['error']['pseudo']) ?>
@@ -17,7 +27,7 @@
 
             <div class="infos">
                 <div class="inputPwd">
-                    <input type="password" name="password" placeholder="Password" autocomplete="current-password" id="password" required>
+                    <input type="password" name="password" placeholder="Password" autocomplete="current-password" id="password" <?= $bloque ? 'disabled' : '' ?> required>
                     <i class="bi bi-eye" id="openEye"></i>
                     <i class="bi bi-eye-slash" id="closeEye"></i>
                 </div>
@@ -29,7 +39,7 @@
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
-            <button type="submit">Se connecter</button>
+            <button type="submit" <?= $bloque ? 'disabled' : '' ?>>Se connecter</button>
             <a href="inscription">S'inscrire</a>
             <?php if (!empty($error)) {
                 echo "<span class='error'>$error</span>";

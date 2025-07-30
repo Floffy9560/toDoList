@@ -3,6 +3,7 @@
 <section>
 
     <?php
+
     if (!isset($_SESSION['pseudo'])) : ?>
         <form action="" method="POST">
 

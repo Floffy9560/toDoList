@@ -64,3 +64,12 @@ input {
 .bi-eye {
   display: none;
 }
+
+.error-message {
+  color: crimson;
+  background: #fff0f0;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #d00;
+  border-radius: 4px;
+}

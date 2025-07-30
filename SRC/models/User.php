@@ -6,6 +6,7 @@ class User
     private $pseudo;
     private $email;
     private $password;
+    private $token;
 
     public function __construct()
     {
@@ -93,15 +94,8 @@ class User
         return $this->password;
     }
 
-    // public function getIdUser($email)
-    // {
-    //     $sql = "SELECT Id_users FROM ppllmm_users WHERE email = :email";
-    //     $stmt = $this->pdo->prepare($sql);
-    //     $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-    //     $stmt->execute();
 
-    //     return $stmt->fetchColumn(); // retourne l'Id_users ou false
-    // }
+
     public function getIdUser($pseudo)
     {
         $sql = "SELECT Id_users FROM ppllmm_users WHERE pseudo = :pseudo";
@@ -113,37 +107,132 @@ class User
         return $stmt->fetchColumn(); // retourne l'Id_users ou false
     }
 
-    public function verifyMailAndPassword($pseudo, $password)
+    // public function verifyPseudoAndPassword($pseudo, $password)
+    // {
+    //     $sql = 'SELECT pseudo ,password FROM ppllmm_users WHERE pseudo = :pseudo';
+
+    //     try {
+    //         $stmt = $this->pdo->prepare($sql);
+    //         $stmt->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
+    //         $stmt->execute();
+    //         $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    //         if ($user && password_verify($password, $user['password'])) {
+    //             return true;
+    //         } else {
+    //             return false;
+    //         }
+    //     } catch (PDOException $e) {
+    //         error_log("Erreur SQL : " . $e->getMessage());
+    //         return false;
+    //     }
+    // }
+
+
+    public function recordFailedAttempt($pseudo)
     {
-        $sql = 'SELECT pseudo ,password FROM ppllmm_users WHERE pseudo = :pseudo';
+        $sql = "UPDATE ppllmm_users
+                SET failed_attempts = failed_attempts + 1,
+                last_attempt = NOW()
+                WHERE pseudo = :pseudo";
 
-        try {
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
-            $stmt->execute();
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':pseudo' => $pseudo]);
+    }
 
-            if ($user && password_verify($password, $user['password'])) {
+
+    public function resetLoginAttempts($pseudo)
+    {
+        $sql = "UPDATE ppllmm_users
+                SET failed_attempts = 0,
+                last_attempt = NULL
+                WHERE pseudo = :pseudo";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':pseudo' => $pseudo]);
+    }
+
+    public function verifyPseudoAndPassword($pseudo, $password)
+    {
+        $userData = $this->getUserByPseudo($pseudo);
+
+        if ($userData) {
+            $now = new DateTime();
+            $lastAttempt = new DateTime($userData['last_attempt'] ?? '2000-01-01 00:00:00');
+            $diff = $now->getTimestamp() - $lastAttempt->getTimestamp();
+
+            if ($userData['failed_attempts'] >= 5 && $diff < 600) {
+                throw new \Exception("Trop de tentatives. Réessayez dans 10 minutes.");
+            }
+
+            if (password_verify($password, $userData['password'])) {
+                $this->resetLoginAttempts($pseudo);
                 return true;
             } else {
+                $this->recordFailedAttempt($pseudo);
                 return false;
             }
-        } catch (PDOException $e) {
-            error_log("Erreur SQL : " . $e->getMessage());
-            return false;
         }
+
+        return false;
     }
+
+
+    // *
+    // ** infos utilisateur : utile pour la protection contre les brute force
+    // =======================================================================
+
+    public function getUserByPseudo($pseudo)
+    {
+        $sql = "SELECT * FROM ppllmm_users WHERE pseudo = :pseudo LIMIT 1";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':pseudo' => $pseudo]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // *
+    // ** vérification mail
+    // =====================
+
+    public function emailExists($email)
+    {
+        $sql = "SELECT id_users FROM ppllmm_users WHERE email = :email";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':email' => $email]);
+        return $stmt->fetch() !== false;
+    }
+
+    // *
+    // ** token de sécurité
+    // ===================== 
+
+    function generateToken($length = 64)
+    {
+        return bin2hex(random_bytes($length / 2)); // 64 caractères hex = 32 octets
+    }
+
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    // *
+    // ** insertion en base de données
+    // ================================ 
 
     public function register()
     {
+        $this->token = $this->generateToken(); // Garde une trace du token pour un futur usage (ex. mail)
+
         $query = $this->pdo->prepare("
-            INSERT INTO `ppllmm_users` ( `email`, `password`,`pseudo`) 
-            VALUES (:email, :password, :pseudo)
-        ");
+        INSERT INTO `ppllmm_users` (`email`, `password`, `pseudo`, `validation_token`) 
+        VALUES (:email, :password, :pseudo, :validation_token)
+    ");
 
         $query->bindValue(':email', $this->email, PDO::PARAM_STR);
         $query->bindValue(':password', $this->password, PDO::PARAM_STR);
         $query->bindValue(':pseudo', $this->pseudo, PDO::PARAM_STR);
+        $query->bindValue(':validation_token', $this->token, PDO::PARAM_STR);
 
         return $query->execute();
     }
