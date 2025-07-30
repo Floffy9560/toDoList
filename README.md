@@ -64,6 +64,8 @@ Ajouter un captcha après 3 ou 5 tentatives
 
 Envoyer un e-mail de sécurité à l’utilisateur si beaucoup de tentatives échouées
 
+(bonus) augmenter le temps par exemple au bout de 3 tantative bloquer 2 mins au bout de 5 bloquer 10 mins au bout de 10 bloquer 30mins et au bout de 15 bloquer 1h30
+
 DELETE FROM ppllmm_project;
 ALTER TABLE ppllmm_project AUTO_INCREMENT=1;
 DELETE FROM ppllmm_tasks;

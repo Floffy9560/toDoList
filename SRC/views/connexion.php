@@ -41,9 +41,7 @@
             </div>
             <button type="submit" <?= $bloque ? 'disabled' : '' ?>>Se connecter</button>
             <a href="inscription">S'inscrire</a>
-            <?php if (!empty($error)) {
-                echo "<span class='error'>$error</span>";
-            } ?>
+
         </form>
 
     <?php else : ?>
