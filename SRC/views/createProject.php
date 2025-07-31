@@ -21,6 +21,12 @@
                 <?php endforeach; ?>
             </select>
             <input type="text" name="description" placeholder="Description de la tâche" required>
+            <div class="priority">
+                <label for="priority">Priorité :</label>
+                <input type="radio" name="priority" value="low" checked> Faible
+                <input type="radio" name="priority" value="medium"> Moyenne
+                <input type="radio" name="priority" value="high"> Haute
+            </div>
             <button type="submit" name="add_task">Ajouter la tâche</button>
             <button><a href="/">Terminé</a></button>
         </form>

@@ -32,7 +32,7 @@ class Task
       // 📋 Récupérer les tâches d’un projet
       public function getTasksByProject($projet_id)
       {
-            $sql = 'SELECT * FROM ppllmm_tasks WHERE id_project = :projet_id';
+            $sql = 'SELECT * FROM ppllmm_tasks WHERE id_project = :projet_id ORDER BY priority ASC';
 
             try {
                   $stmt = $this->pdo->prepare($sql);
@@ -84,6 +84,21 @@ class Task
                   return $stmt->execute();
             } catch (PDOException $e) {
                   echo "Erreur lors de la mise à jour de la tâche : " . $e->getMessage();
+                  return false;
+            }
+      }
+
+      public function updatePriority($taskId, $priority)
+      {
+            $query = "UPDATE ppllmm_tasks SET priority = :priority WHERE Id_tasks = :taskId";
+
+            try {
+                  $stmt = $this->pdo->prepare($query);
+                  $stmt->bindParam(':priority', $priority, PDO::PARAM_INT);
+                  $stmt->bindParam(':taskId', $taskId, PDO::PARAM_INT);
+                  return $stmt->execute();
+            } catch (PDOException $e) {
+                  echo "Erreur lors de la mise à jour de la priorité : " . $e->getMessage();
                   return false;
             }
       }

@@ -1,5 +1,7 @@
 <?php
 
+
+
 if (empty($_SESSION)) {
       header('Location: connexion');
       exit();
@@ -7,6 +9,16 @@ if (empty($_SESSION)) {
 
 require_once 'models/Project.php';
 require_once 'models/Tasks.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      $data = json_decode(file_get_contents('php://input'), true);
+
+      $taskId = (int) $data['Id_tasks'];
+      $priority = (int) $data['priority'];
+
+      $task = new Task();
+      $task->updatePriority($taskId, $priority);
+}
 
 if (isset($_SESSION['idUser'])) {
       $Id_users = $_SESSION['idUser'];
@@ -37,4 +49,5 @@ if (!empty($_GET['deleteProject'])) {
 
 render('index', false, [
       'projets' => $projets ?? '',
+
 ]);

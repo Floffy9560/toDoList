@@ -77,7 +77,7 @@ main {
 .top {
   display: flex;
   align-items: center;
-  padding: 0 5rem;
+  padding: 10px;
   height: 8rem;
   width: 100%;
   border-bottom: 2px solid rgba(237, 221, 83, 1);
@@ -114,6 +114,7 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 15px;
 }
 .cardProject {
@@ -125,6 +126,7 @@ section {
   width: 310px;
   padding: 10px;
   border: 2px solid greenyellow;
+  border-radius: 10px;
 }
 input {
   border: none;
@@ -144,6 +146,7 @@ ul {
   align-items: center;
   padding: 5px;
   background-color: lavender;
+  border-radius: 8px;
 }
 #finish {
   background-color: rgb(98, 228, 98);
@@ -160,6 +163,56 @@ ul {
 .done {
   text-decoration: line-through;
   color: gray;
+}
+.currentTask {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 5px;
+  border-radius: 8px;
+}
+.priority-group {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 10px;
+  margin-top: 5px;
+}
+form.formProject.task {
+  transition: background-color 0.3s ease;
+}
+.bg-priority-red {
+  background-color: #fdecea;
+}
+
+.bg-priority-orange {
+  background-color: #fff4e5;
+}
+
+.bg-priority-green {
+  background-color: #e7f5e8;
+}
+
+.priority-red {
+  color: #ee0c0c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.priority-orange {
+  color: #da6d00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.priority-green {
+  color: #14ed1f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /*

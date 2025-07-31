@@ -19,6 +19,12 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// Routes manuelles pour endpoints AJAX/API
+if ($_SERVER['REQUEST_URI'] === '/update_priority.php') {
+      require_once __DIR__ . '/update_priority.php';
+      exit;
+}
+
 require_once 'models/Database.php';
 require 'assets/util.php';
 
