@@ -1,23 +1,36 @@
 <?php
 require_once 'models/User.php';
 require_once 'models/Security.php';
+require_once 'models/HoneypotProtector.php';
 
-$user = new User();
 $error = null;
+$protector = new HoneypotProtector();
 
-if (!empty($_POST['pseudo']) && !empty($_POST['password'])) {
-      $pseudo = Security::cleanInput($_POST['pseudo']);
-      $password = trim($_POST['password']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($protector->isBotSubmission($_POST)) {
+        // Optionnel : log l'IP ici
+        http_response_code(403);
+        echo "Accès interdit.";
+        exit;
+    }
 
-      try {
+
+    $user = new User();
+    $error = null;
+
+    if (!empty($_POST['pseudo']) && !empty($_POST['password'])) {
+        $pseudo = Security::cleanInput($_POST['pseudo']);
+        $password = trim($_POST['password']);
+
+        try {
             if (!Security::validatePseudo($pseudo)) {
-                  throw new Exception("Pseudo invalide.");
+                throw new Exception("Pseudo invalide.");
             }
 
             $userData = $user->getUserByPseudo($pseudo);
 
             if (!$userData) {
-                  throw new Exception("Utilisateur introuvable.");
+                throw new Exception("Utilisateur introuvable.");
             }
 
             // Gestion des délais de blocage progressifs
@@ -26,37 +39,40 @@ if (!empty($_POST['pseudo']) && !empty($_POST['password'])) {
             $now = time();
 
             $delays = [
-                  3  => 120,    // 2 minutes
-                  5  => 600,    // 10 minutes
-                  10 => 1800,   // 30 minutes
-                  15 => 5400,   // 1h30
+                3  => 120,    // 2 minutes
+                5  => 600,    // 10 minutes
+                10 => 1800,   // 30 minutes
+                15 => 5400,   // 1h30
             ];
 
             $blockTime = 0;
             foreach ($delays as $attemptThreshold => $seconds) {
-                  if ($failedAttempts >= $attemptThreshold) {
-                        $blockTime = $seconds;
-                  }
+                if ($failedAttempts >= $attemptThreshold) {
+                    $blockTime = $seconds;
+                }
             }
 
             if ($blockTime > 0 && ($now - $lastAttemptTimestamp) < $blockTime) {
-                  $remaining = $blockTime - ($now - $lastAttemptTimestamp);
-                  throw new Exception("Trop de tentatives. Réessayez dans " . ceil($remaining / 60) . " minute(s).");
+                $remaining = $blockTime - ($now - $lastAttemptTimestamp);
+                throw new Exception("Trop de tentatives. Réessayez dans " . ceil($remaining / 60) . " minute(s).");
             }
 
             if (password_verify($password, $userData['password'])) {
-                  $user->resetLoginAttempts($pseudo);
-                  $_SESSION['idUser'] = $userData['Id_users'];
-                  $_SESSION['pseudo'] = $pseudo;
-                  header('Location: index');
-                  exit;
+                $user->resetLoginAttempts($pseudo);
+                $_SESSION['idUser'] = $userData['Id_users'];
+                $_SESSION['pseudo'] = $pseudo;
+                header('Location: index');
+                exit;
             } else {
-                  $user->recordFailedAttempt($pseudo);
-                  throw new Exception("Identifiants incorrects.");
+                $user->recordFailedAttempt($pseudo);
+                throw new Exception("Identifiants incorrects.");
             }
-      } catch (Exception $e) {
+        } catch (Exception $e) {
             $error = $e->getMessage();
-      }
+        }
+    }
 }
 
-render('connexion', false, ['error' => $error]);
+render('connexion', false, [
+    'error' => $error,
+]);

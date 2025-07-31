@@ -16,6 +16,11 @@
     if (!isset($_SESSION['pseudo'])) : ?>
         <form action="" method="POST">
 
+            <div style="display: none;">
+                <label for="honeypot">Saississez votre code</label>
+                <input type="text" name='fake_email' id="honeypot">
+            </div>
+
             <div class="infos">
                 <input type="text" name="pseudo" placeholder="Pseudo" autocomplete="username" <?= $bloque ? 'disabled' : '' ?> required>
                 <?php if (!empty($data['error']['pseudo'])) : ?>

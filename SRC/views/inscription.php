@@ -7,6 +7,16 @@
     if (!isset($_SESSION['pseudo'])) : ?>
         <form action="" method="POST">
 
+            <div style="display: none;">
+                <label for="time-limit">Saississez votre code</label>
+                <input type="hidden" name="form_timestamp" id="time-limite" value="<?= time(); ?>">
+            </div>
+
+            <div style="display: none;">
+                <label for="honeypot">Saississez votre code</label>
+                <input type="text" name='fake_email' id="honeypot">
+            </div>
+
             <div class="infos">
                 <input type="text" name="pseudo" placeholder="Pseudo" autocomplete="username" require>
                 <?php if (!empty($data['error']['pseudo'])) { ?>
