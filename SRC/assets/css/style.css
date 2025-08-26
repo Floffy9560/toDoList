@@ -112,7 +112,7 @@ section {
 }
 .currentProject {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   flex-wrap: wrap;
   gap: 15px;
@@ -156,7 +156,8 @@ ul {
   color: white;
   box-shadow: none;
 }
-.btnCheck {
+.btnCheck,
+.btnDelete {
   border: none;
   box-shadow: none;
 }

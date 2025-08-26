@@ -45,7 +45,7 @@
                 <?php endif; ?>
             </div>
             <button type="submit" <?= $bloque ? 'disabled' : '' ?>>Se connecter</button>
-            <a href="inscription">S'inscrire</a>
+            <a href="inscription" id="inscription">S'inscrire</a>
 
         </form>
 

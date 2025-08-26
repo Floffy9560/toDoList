@@ -11,7 +11,10 @@
         echo '<link rel="stylesheet" href="' . $style . '" />';
     } ?>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <title>To do list</title>
+    <title>To do list
+        <?php
+        (!empty($data['title'])) ? ' - ' . $title : ''; ?>
+    </title>
 </head>
 
 <body>
@@ -91,6 +94,7 @@
 
     <footer>
         <p>Copyright 2025</p>
+        <p>Made with ❤️ by FLOX</p>
     </footer>
 
     <script src="assets/js/script.js"></script>

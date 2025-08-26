@@ -28,7 +28,7 @@
                                 };
                                 ?>
 
-                                <form class="formProject task <?= $priorityClass ?>" method="post" onsubmit="return false;">
+                                <form class="formProject task <?= $priorityClass ?>" method="POST" onsubmit="return false;">
                                     <input type="hidden" name="currentTask" value="<?= htmlspecialchars($task['task']) ?>">
 
                                     <li class="currentTask <?= $task['done'] ? 'done' : '' ?> ">
@@ -63,6 +63,10 @@
                                     </li>
 
                                     <button class="btnCheck" type="button"><i class="bi bi-check2-circle"></i></button>
+
+                                    <input type="hidden" name="deleteTask" value="<?= $task['Id_tasks'] ?>">
+                                    <button class="btnDelete"><i class="bi bi-x"></i></button>
+
                                 </form>
 
                             <?php endforeach; ?>

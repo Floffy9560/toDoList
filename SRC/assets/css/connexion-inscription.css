@@ -22,12 +22,18 @@ input {
   width: 100%;
   padding: 8px;
   border-radius: 10px;
+  font-size: 21px;
 }
 .error {
   color: red;
   font-size: 20px;
 }
-
+button {
+  font-size: 20px;
+}
+#inscription {
+  font-size: 20px;
+}
 /*
 ** Inscription
 =============== */
@@ -42,7 +48,7 @@ input {
   color: #8b0000;
   position: relative;
   padding-left: 10px;
-  font-size: 12px;
+  font-size: 14px;
 }
 .small.valid {
   color: green;

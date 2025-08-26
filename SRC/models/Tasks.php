@@ -12,19 +12,35 @@ class Task
       }
 
       // 🔧 Ajouter une tâche à un projet
-      public function addTask($projet_id, $description, $Id_users)
+      public function addTask($projet_id, $description, $Id_users, $priority = 1)
       {
-            $sql = 'INSERT INTO `ppllmm_tasks`(`task`, `Id_project`, `Id_users`) VALUES (:description, :projet_id, :Id_users)';
+            $sql = 'INSERT INTO `ppllmm_tasks`(`task`, `Id_project`, `Id_users`,`priority`) VALUES (:description, :projet_id, :Id_users, :priority)';
 
             try {
                   $stmt = $this->pdo->prepare($sql);
                   $stmt->bindParam(':description', $description, PDO::PARAM_STR);
                   $stmt->bindParam(':projet_id', $projet_id, PDO::PARAM_INT);
                   $stmt->bindParam(':Id_users', $Id_users, PDO::PARAM_INT);
+                  $stmt->bindParam(':priority', $priority, PDO::PARAM_INT);
                   $stmt->execute();
                   return true;
             } catch (PDOException $e) {
                   echo "Erreur lors de l'ajout de la tâche : " . $e->getMessage();
+                  return false;
+            }
+      }
+
+      //Suppression d'une tâche
+      public function deleteTask($taskId)
+      {
+            $sql = 'DELETE FROM ppllmm_tasks WHERE Id_tasks = :taskId';
+
+            try {
+                  $stmt = $this->pdo->prepare($sql);
+                  $stmt->bindParam(':taskId', $taskId, PDO::PARAM_INT);
+                  return $stmt->execute();
+            } catch (PDOException $e) {
+                  echo "Erreur lors de la suppression de la tâche : " . $e->getMessage();
                   return false;
             }
       }

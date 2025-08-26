@@ -10,8 +10,11 @@
     </form>
 
     <?php if (isset($projets) && count($projets) > 0): ?>
+
         <h2>Ajouter une tâche</h2>
-        <form method="POST" action="">
+
+        <form method="POST" action="" class="task-form">
+
             <select name="projet_id" required>
                 <option value="">-- Choisir un projet --</option>
                 <?php foreach ($projets as $projet): ?>
@@ -20,16 +23,20 @@
                     </option>
                 <?php endforeach; ?>
             </select>
+
             <input type="text" name="description" placeholder="Description de la tâche" required>
             <div class="priority">
                 <label for="priority">Priorité :</label>
-                <input type="radio" name="priority" value="low" checked> Faible
-                <input type="radio" name="priority" value="medium"> Moyenne
-                <input type="radio" name="priority" value="high"> Haute
+                <input type="radio" name="priority" value="3" checked> Faible
+                <input type="radio" name="priority" value="2"> Moyenne
+                <input type="radio" name="priority" value="1"> Haute
             </div>
+
             <button type="submit" name="add_task">Ajouter la tâche</button>
             <button><a href="/">Terminé</a></button>
+
         </form>
+
     <?php endif; ?>
 
 </section>
