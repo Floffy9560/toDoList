@@ -31,14 +31,6 @@ footer {
     /* Vert */ rgba(237, 221, 83, 1) 100% /* Jaune */
   );
 }
-/* .logo {
-  background-color: #2c2c2c;
-  background-color: rgb(6, 142, 35);
-  padding: 5px;
-  display: block;
-  height: 90%;
-  width: auto;
-} */
 
 .titleAndNav {
   margin: auto;
@@ -70,21 +62,24 @@ main {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 35px;
+  gap: 20px;
   flex: 1;
 }
 
 .top {
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 10px;
-  height: 8rem;
+  height: 5rem;
   width: 100%;
   border-bottom: 2px solid rgba(237, 221, 83, 1);
 }
-
+.btn_create_project {
+  font-size: 1.2rem;
+}
 button {
-  padding: 10px;
+  padding: 8px;
   border: none;
   box-shadow: 4px 4px 8px black;
   border-radius: 8px;
@@ -110,6 +105,16 @@ a {
 section {
   padding: 15px;
 }
+.project_category {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  gap: 50px;
+  margin-bottom: 15px;
+  background-color: #a8e6a3;
+}
 .currentProject {
   display: flex;
   align-items: flex-start;
@@ -123,7 +128,8 @@ section {
   align-items: center;
   flex-direction: column;
   gap: 20px;
-  width: 310px;
+  width: 100%;
+  max-width: 400px;
   padding: 10px;
   border: 2px solid greenyellow;
   border-radius: 10px;
@@ -172,7 +178,11 @@ ul {
   gap: 15px;
   padding: 5px;
   border-radius: 8px;
+  width: 100%;
 }
+/*
+** input radio priority
+=========================== */
 .priority-group {
   display: flex;
   flex-direction: column;
@@ -183,37 +193,102 @@ ul {
 form.formProject.task {
   transition: background-color 0.3s ease;
 }
+
 .bg-priority-red {
-  background-color: #fdecea;
+  background-color: #f4a6a6;
 }
 
 .bg-priority-orange {
-  background-color: #fff4e5;
+  background-color: #ffd6a5;
 }
 
 .bg-priority-green {
-  background-color: #e7f5e8;
+  background-color: #a8e6a3;
 }
 
 .priority-red {
-  color: #ee0c0c;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.1rem;
 }
 
 .priority-orange {
-  color: #da6d00;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.1rem;
 }
 
 .priority-green {
-  color: #14ed1f;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.1rem;
+}
+/* Animation de sélection */
+.priority-radio {
+  appearance: none; /* on enlève le rendu natif */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid black;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.3s ease;
+}
+
+/* cercle intérieur animé */
+.priority-radio::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: transparent;
+  transform: scale(0);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+/* état coché */
+.priority-radio:checked::before {
+  transform: scale(1);
+}
+
+/* couleurs par priorité */
+.priority-red .priority-radio:checked::before {
+  background: #f4a6a6;
+}
+.priority-orange .priority-radio:checked::before {
+  background: #ffd6a5;
+}
+.priority-green .priority-radio:checked::before {
+  background: #a8e6a3;
+}
+
+/* petit effet de "pulse" */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.3);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(0, 0, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+.priority-radio:checked::before {
+  animation: pulse 0.4s ease;
+}
+
+/*boutton */
+.formProject__btn_action {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 /*

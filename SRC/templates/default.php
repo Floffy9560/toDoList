@@ -21,8 +21,7 @@
 
     <header>
 
-        <!-- <img src="assets/logo/logo_FLOX.svg" alt="logo svg" class="logo"> -->
-        <a href="/" style="height: 100%;">
+        <a href="/" style="height: 100%;" aria-label="ToDoList – Page d’accueil">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="-20 -20 202 202"

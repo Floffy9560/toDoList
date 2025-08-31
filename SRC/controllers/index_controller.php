@@ -34,12 +34,6 @@ if (isset($_SESSION['idUser'])) {
       }
 }
 
-// if (isset($_GET['currentTask']) && isset($_GET['markDone'])) {
-//       $taskText = $_GET['currentTask'];
-//       $taskModel = new Task();
-//       $taskModel->markTaskAsDone($taskText);
-// }
-
 if (isset($_GET['currentTask']) && isset($_GET['markDone'])) {
       $taskText = $_GET['currentTask'];
       $taskModel = new Task();

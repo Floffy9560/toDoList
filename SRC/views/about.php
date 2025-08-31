@@ -19,16 +19,14 @@
             <li>PHP orienté objet</li>
             <li>MySQL</li>
             <li>HTML5 / CSS3 (sans framework lourd)</li>
+            <li>JavaScript (avec AJAX pour certaines interactions)</li>
+            <li>Bootstrap Icons pour les icônes</li>
         </ul>
 
         <p>
             <strong>Auteur :</strong> F-L-O-X.
             <br>
             <strong>GitHub :</strong> <a href="https://github.com/Floffy9560">F-L-O-X</a>
-        </p>
-
-        <p>
-            <strong>Technologies :</strong> PHP, MySQL, HTML/CSS ,JS
         </p>
 
         <p>

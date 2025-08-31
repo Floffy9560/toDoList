@@ -15,21 +15,29 @@ session_start();
 //       echo "Aucune session active.";
 // }
 
+//
 // Activation des erreurs et affiche des messages d'erreur
+// ===========================================
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
-// Routes manuelles pour endpoints AJAX/API
-if ($_SERVER['REQUEST_URI'] === '/update_priority.php') {
-      require_once __DIR__ . '/update_priority.php';
-      exit;
-}
 
 require_once 'models/Database.php';
 require 'assets/util.php';
 
+// 
+// Routes manuelles pour endpoints AJAX/API (fichier à la racine du projet)
+// =========================================================================
 
+$file = __DIR__ . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+if (is_file($file)) {
+      require_once $file;
+      exit;
+}
+
+//
 //Récupération de l'adresse de la page 
+// ===================================
 $path = $_SERVER['REDIRECT_URL'];
 
 
