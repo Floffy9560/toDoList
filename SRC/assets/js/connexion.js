@@ -12,3 +12,14 @@ closeEye.addEventListener("click", () => {
   openEye.style.display = "block";
   closeEye.style.display = "none";
 });
+
+const forget_password = document.getElementById("forget_password");
+const form_forget_password = document.querySelector(".form_forget_password");
+const close_forget = document.getElementById("close_forget");
+
+forget_password.addEventListener("click", function () {
+  form_forget_password.classList.add("active");
+});
+close_forget.addEventListener("click", function () {
+  form_forget_password.classList.remove("active");
+});

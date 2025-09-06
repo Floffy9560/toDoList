@@ -34,6 +34,26 @@ button {
 #inscription {
   font-size: 20px;
 }
+
+/*
+** Inscription
+=============== */
+.form_forget_password {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.form_forget_password.active {
+  display: flex;
+}
 /*
 ** Inscription
 =============== */

@@ -76,6 +76,7 @@
                 <li><a href="connexion">Connexion</a></li>
                 <?php if (!empty($_SESSION['idUser'])) {
                     echo '<li><a href="deconnexion">Se deconnecter</a></li>';
+                    echo '<li><a href="calendar">Calendrier</a></li>';
                 }; ?>
             </ul>
 
@@ -96,8 +97,7 @@
         <p>Made with ❤️ by FLOX</p>
     </footer>
 
-    <script src="assets/js/script.js"></script>
-    <!-- <script src="<?= $js ?> "></script> -->
+    <script src="assets/js/default.js"></script>
     <?php
     if (!empty($js)) {
         echo '<script src="' . htmlspecialchars($js) . '"></script>';

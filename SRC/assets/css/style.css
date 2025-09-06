@@ -1,19 +1,23 @@
+/* ==========================
+   Reset global
+========================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Times New Roman", Times, serif;
 }
+
 body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-color: #f5e9e9;
 }
 
-/*
-** Header 
-========= */
-
+/* ==========================
+   Header & Navigation
+========================== */
 header,
 footer {
   width: 100%;
@@ -24,45 +28,46 @@ footer {
   background: linear-gradient(
     to right,
     rgba(237, 221, 83, 1) 0%,
-    /* Jaune */ rgba(87, 199, 133, 1) 20%,
-    /* Vert */ rgba(42, 123, 155, 1) 40%,
-    /* Début du bleu */ rgba(42, 123, 155, 1) 60%,
-    /* Fin du bleu */ rgba(87, 199, 133, 1) 80%,
-    /* Vert */ rgba(237, 221, 83, 1) 100% /* Jaune */
+    rgba(87, 199, 133, 1) 20%,
+    rgba(42, 123, 155, 1) 40%,
+    rgba(42, 123, 155, 1) 60%,
+    rgba(87, 199, 133, 1) 80%,
+    rgba(237, 221, 83, 1) 100%
   );
 }
 
 .titleAndNav {
   margin: auto;
 }
+
 .menuLaptop {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
+
 .burgerMenu {
   display: none;
 }
+
 #ulNav {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   list-style: none;
-  display: flex;
-  flex-direction: row;
   gap: 15px;
 }
 
-/*
-** Main 
-========= */
-
+/* ==========================
+   Main Layout
+========================== */
 main {
   width: 100%;
+  height: auto;
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  justify-content: center;
   flex: 1;
 }
 
@@ -75,46 +80,75 @@ main {
   width: 100%;
   border-bottom: 2px solid rgba(237, 221, 83, 1);
 }
+
+/* ==========================
+   Dashboard
+========================== */
+.dashboard {
+  display: none;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 1rem;
+  gap: 2rem;
+  width: 20%;
+  min-height: 100vh;
+  min-width: 200px;
+  border-right: 2px solid rgba(237, 221, 83, 1);
+  background-color: rgb(182, 204, 137);
+}
+
+.dashboard__type_project {
+  display: flex;
+  flex-direction: column;
+  padding: 0.7rem;
+  gap: 10px;
+  border-bottom: #a8e6a3 2px solid;
+}
+
 .btn_create_project {
   font-size: 1.2rem;
 }
-button {
-  padding: 8px;
-  border: none;
-  box-shadow: 4px 4px 8px black;
-  border-radius: 8px;
+.dashboard__type_project__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 600px;
+  overflow-y: auto;
 }
-h1 {
-  font-size: 25px;
-}
-h2 {
-  width: auto;
-  text-align: left;
-  padding-left: 20px;
-}
-h3 {
-  width: 100%;
+.dashboard__type_project__list__item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   padding: 5px;
-  border-bottom: 1px solid black;
-  margin-bottom: 8px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
 }
-a {
-  text-decoration: none;
-  color: navy;
+.dashboard__type_project__list__item:hover {
+  background-color: #d4f5d4;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
 }
-section {
-  padding: 15px;
+
+/* ==========================
+   Display / Projects & Tasks
+========================== */
+.display {
+  width: 80%;
+  min-height: 100%;
 }
+
 .project_category {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
-  gap: 50px;
   margin-bottom: 15px;
+  gap: clamp(1rem, 3vw, 4rem);
   background-color: #a8e6a3;
 }
+
 .currentProject {
   display: flex;
   align-items: flex-start;
@@ -122,55 +156,40 @@ section {
   flex-wrap: wrap;
   gap: 15px;
 }
+
 .cardProject {
+  position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
   gap: 20px;
   width: 100%;
   max-width: 400px;
+  height: 350px;
+  max-height: 400px;
   padding: 10px;
   border: 2px solid greenyellow;
   border-radius: 10px;
 }
-input {
-  border: none;
-}
-ul {
-  width: 100%;
+
+.cardProject ul {
+  flex: 1; /* prend l’espace restant */
+  overflow-y: auto; /* scroll uniquement ici */
+  margin: 0;
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+}
+.cardProject ul::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* optionnel : rend la scrollbar transparente */
 }
 
-.task {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px;
-  background-color: lavender;
-  border-radius: 8px;
+/* Pour Firefox */
+.cardProject ul {
+  scrollbar-width: none; /* supprime la scrollbar */
+  -ms-overflow-style: none; /* IE 10+ */
 }
-#finish {
-  background-color: rgb(98, 228, 98);
-}
-#finish:disabled {
-  background-color: white;
-  color: white;
-  box-shadow: none;
-}
-.btnCheck,
-.btnDelete {
-  border: none;
-  box-shadow: none;
-}
-.done {
-  text-decoration: line-through;
-  color: gray;
-}
+
 .currentTask {
   display: flex;
   justify-content: space-between;
@@ -180,18 +199,118 @@ ul {
   border-radius: 8px;
   width: 100%;
 }
-/*
-** input radio priority
-=========================== */
+.currentTask__text {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.task {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  background-color: lavender;
+  border-radius: 8px;
+}
+
+.done {
+  text-decoration: line-through;
+  background-color: gray;
+}
+.deadline {
+  font-size: 0.9em;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.deadline.ok {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.deadline.soon {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.deadline.late {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.main__btn_create_task {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  width: 35px;
+  height: 35px;
+  padding: 8px;
+  border-radius: 50%;
+  background-color: rgba(42, 123, 155, 0.7);
+}
+/* ==========================
+   Typography
+========================== */
+h1 {
+  font-size: 25px;
+}
+
+h2 {
+  width: auto;
+  text-align: left;
+}
+
+h3 {
+  width: 100%;
+  padding: 5px;
+  border-bottom: 1px solid black;
+  margin-bottom: 8px;
+}
+
+a {
+  text-decoration: none;
+  color: navy;
+}
+
+/* ==========================
+   Forms & Inputs
+========================== */
+input {
+  border: none;
+}
+
+ul {
+  width: 100%;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+form.formProject.task {
+  transition: background-color 0.3s ease;
+}
+
+.formProject__btn_action {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ==========================
+   Priority / Radio
+========================== */
 .priority-group {
   display: flex;
   flex-direction: column;
   align-items: start;
   gap: 10px;
   margin-top: 5px;
-}
-form.formProject.task {
-  transition: background-color 0.3s ease;
 }
 
 .bg-priority-red {
@@ -206,29 +325,17 @@ form.formProject.task {
   background-color: #a8e6a3;
 }
 
-.priority-red {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.1rem;
-}
-
-.priority-orange {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.1rem;
-}
-
+.priority-red,
+.priority-orange,
 .priority-green {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.1rem;
 }
-/* Animation de sélection */
+
 .priority-radio {
-  appearance: none; /* on enlève le rendu natif */
+  appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   width: 18px;
@@ -240,34 +347,27 @@ form.formProject.task {
   transition: border-color 0.3s ease;
 }
 
-/* cercle intérieur animé */
 .priority-radio::before {
   content: "";
   position: absolute;
   inset: 3px;
   border-radius: 50%;
-  background: transparent;
+  background: black;
   transform: scale(0);
   transition: transform 0.3s ease, background 0.3s ease;
 }
 
-/* état coché */
 .priority-radio:checked::before {
   transform: scale(1);
+  animation: pulse 0.4s ease;
 }
 
-/* couleurs par priorité */
-.priority-red .priority-radio:checked::before {
-  background: #f4a6a6;
-}
-.priority-orange .priority-radio:checked::before {
-  background: #ffd6a5;
-}
+.priority-red .priority-radio:checked::before,
+.priority-orange .priority-radio:checked::before,
 .priority-green .priority-radio:checked::before {
-  background: #a8e6a3;
+  background: #2c2c2c;
 }
 
-/* petit effet de "pulse" */
 @keyframes pulse {
   0% {
     box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.3);
@@ -280,41 +380,215 @@ form.formProject.task {
   }
 }
 
-.priority-radio:checked::before {
-  animation: pulse 0.4s ease;
+/* ==========================
+   Buttons / Inputs
+========================== */
+button {
+  padding: 8px;
+  border: none; /* box-shadow: 4px 4px 8px black; */
+  background-color: rgb(98, 228, 98);
+  border-radius: 8px;
+}
+#finish {
+  background-color: rgb(98, 228, 98);
 }
 
-/*boutton */
-.formProject__btn_action {
+#finish:disabled {
+  background-color: #f5e9e9;
+  color: #f5e9e9;
+  box-shadow: none;
+}
+
+.btnCheck,
+.btnDelete {
+  border: none;
+  box-shadow: none;
+}
+
+/* ==========================
+   Sections
+========================== */
+section {
+  padding: 15px;
+}
+
+/* ==========================
+   Modal
+========================== */
+/* Fond du modal */
+.modal {
+  display: none; /* caché par défaut */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6); /* semi-transparent sombre */
+  transition: opacity 0.3s ease;
+}
+
+/* Contenu du modal */
+.modal-content {
+  background-color: #1e1e1e; /* gris très sombre */
+  margin: 10% auto;
+  padding: 20px 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  color: #f5f5f5;
+  position: relative;
+}
+
+/* Bouton de fermeture */
+.modal-content .close {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  color: #aaa;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.modal-content .close:hover {
+  color: #fff;
+}
+
+/* Formulaire */
+#formAddTask {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+#formAddTask label {
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+#formAddTask input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 6px;
+  outline: none;
+  background-color: #2b2b2b;
+  color: #f5f5f5;
+  font-size: 14px;
+}
+#formAddTask input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 6px;
+  outline: none;
+  background-color: #2b2b2b;
+  color: #f5f5f5;
+  font-size: 14px;
+}
+#formAddTask select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 6px;
+  outline: none;
+  background-color: #2b2b2b;
+  color: #f5f5f5;
+  font-size: 14px;
+}
+#formAddTask button {
+  width: 100%;
+  padding: 12px;
+  background-color: #3a86ff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#formAddTask button:hover {
+  background-color: #2f6fd1;
+}
+
+/* Titre du modal */
+#modalProjectName {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #fff;
+  text-align: center;
+}
+
+/* ==========================
+   Message succes or error
+========================== */
+#messageContainer {
+  position: fixed;
+  bottom: 20px; /* en bas plutôt qu’en haut */
+  right: 20px;
+  z-index: 9999;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-/*
-** Footer 
-========== */
+#messageContainer .message {
+  padding: 12px 20px;
+  border-radius: 8px;
+  background: #d4edda; /* vert clair par défaut */
+  color: #155724;
+  font-weight: 600;
+  font-family: sans-serif;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: opacity 0.5s ease;
+  min-width: 220px;
+}
 
+#messageContainer .message.error {
+  background: #f8d7da; /* rouge clair */
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+#messageContainer .message.hide {
+  opacity: 0;
+}
+
+/* ==========================
+   Footer
+========================== */
 footer {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/*
-** Menu smarphone
-================ */
+/* ==========================
+   Responsive / Mobile
+========================== */
 @media (max-width: 968px) {
   .menuLaptop {
     display: none;
   }
+
   .burgerMenu {
     display: flex;
     z-index: 999;
   }
+
   .bi-list {
     font-size: 50px;
   }
+
   #ulNav {
     display: none; /* caché par défaut sur mobile */
     flex-direction: column;
@@ -332,9 +606,10 @@ footer {
       rgba(42, 123, 155, 1) 40%,
       rgba(42, 123, 155, 1) 60%,
       rgba(87, 199, 133, 1) 80%,
-      rgba(237, 221, 83, 1) 100% /* Jaune */
+      rgba(237, 221, 83, 1) 100%
     );
   }
+
   #ulNav a {
     font-size: 21px;
     color: gainsboro;

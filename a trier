@@ -1,0 +1,49 @@
+/* PAGE CALENDRIER :  */
+<h2>Calendrier des tâches</h2>
+
+<div class="calendar" id="calendar"></div>
+
+<div id="calendar-container">
+      <div class="calendar-header">
+            <div>Dim</div>
+            <div>Lun</div>
+            <div>Mar</div>
+            <div>Mer</div>
+            <div>Jeu</div>
+            <div>Ven</div>
+            <div>Sam</div>
+      </div>
+      <div class="calendar-grid">
+            <?php for ($day = 1; $day <= 30; $day++): ?>
+                  <div class="calendar-day" data-day="<?= $day ?>"></div>
+            <?php endfor; ?>
+      </div>
+</div>
+
+<script>
+      const projects = <?= json_encode($projects) ?>;
+
+      // Parcours des tâches et placement dans les cases
+      projects.forEach(proj => {
+            proj.tasks.forEach(task => {
+                  if (!task.deadline) return;
+
+                  const date = new Date(task.deadline);
+                  const dayCell = document.querySelector(`[data-day='${date.getDate()}']`);
+                  if (dayCell) {
+                        const divTask = document.createElement('div');
+                        divTask.textContent = task.task;
+                        divTask.classList.add('calendar-task');
+
+                        if (task.done) divTask.classList.add('done');
+
+                        // Ajouter couleur selon priorité
+                        if (task.priority === 1) divTask.classList.add('priority-red');
+                        if (task.priority === 2) divTask.classList.add('priority-orange');
+                        if (task.priority === 3) divTask.classList.add('priority-green');
+
+                        dayCell.appendChild(divTask);
+                  }
+            });
+      });
+</script>

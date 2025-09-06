@@ -9,36 +9,24 @@ class Project
             $this->pdo = getConnexion();
       }
 
-      public function addProject($project_name, $Id_users)
+      public function addProject($project_name, $Id_users, $priority_project = 'normal')
       {
-            $insert = 'INSERT INTO `ppllmm_project`( `project_name`, `Id_users`) VALUES (:project_name, :Id_users)';
+            $insert = 'INSERT INTO `ppllmm_project`( `project_name`, `Id_users`, `priority_project`) VALUES (:project_name, :Id_users, :priority_project)';
 
             try {
                   $stmt = $this->pdo->prepare($insert);
                   $stmt->bindParam(':project_name', $project_name, PDO::PARAM_STR);
                   $stmt->bindParam(':Id_users', $Id_users, PDO::PARAM_INT);
+                  $stmt->bindParam(':priority_project', $priority_project, PDO::PARAM_STR);
                   $stmt->execute();
-                  return true;
+                  // Récupérer l'ID du projet créé via PDO
+                  return $this->pdo->lastInsertId();
             } catch (PDOException $e) {
                   echo "Erreur lors de l'ajout du projet : " . $e->getMessage();
                   return false;
             }
       }
-      // public function getAllProject($Id_users)
-      // {
-      //       $display = 'SELECT * FROM ppllmm_project WHERE id_users = :Id_users';
 
-      //       try {
-      //             $stmt = $this->pdo->prepare($display);
-      //             $stmt->bindParam(':Id_users', $Id_users, PDO::PARAM_INT);  // <-- Bind ici
-      //             $stmt->execute();
-      //             $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      //             return $projects;
-      //       } catch (PDOException $e) {
-      //             echo "Erreur lors de la récupération des projets : " . $e->getMessage();
-      //             return false;
-      //       }
-      // }
       public function getAllProject($Id_users)
       {
             $sql = '
@@ -46,11 +34,12 @@ class Project
             p.Id_project,
             p.project_name,
             p.Id_users,
-            p.priority AS project_priority,
+            p.priority_project AS project_priority,
             t.Id_tasks,
             t.task,
-            t.priority AS task_priority,
-            t.done
+            t.priority_task AS task_priority,
+            t.done,
+            t.deadline
         FROM ppllmm_project p
         LEFT JOIN ppllmm_tasks t ON p.Id_project = t.Id_project
         WHERE p.Id_users = :Id_users
@@ -78,18 +67,17 @@ class Project
                               ];
                         }
 
-                        // Si une tâche existe, on l’ajoute
                         if (!empty($row['Id_tasks'])) {
                               $projects[$projId]['tasks'][] = [
                                     'Id_tasks' => $row['Id_tasks'],
                                     'task' => $row['task'],
                                     'priority' => $row['task_priority'],
-                                    'done' => (bool)$row['done']
+                                    'done' => (bool)$row['done'],
+                                    'deadline' => $row['deadline'] ?? null // ← ajouté
                               ];
                         }
                   }
 
-                  // Réindexer les projets
                   return array_values($projects);
             } catch (PDOException $e) {
                   echo "Erreur lors de la récupération des projets : " . $e->getMessage();
@@ -98,27 +86,29 @@ class Project
       }
 
 
-      public function getProjectByPriority($priority)
+
+      public function getProjectByPriority($priority_project)
       {
             $select = '
-        SELECT 
-            p.Id_project,
-            p.project_name,
-            p.Id_users,
-            p.priority AS project_priority,
-            t.Id_tasks,
-            t.task,
-            t.priority AS task_priority,
-            t.done
-        FROM ppllmm_project p
-        LEFT JOIN ppllmm_tasks t ON t.Id_project = p.Id_project
-        WHERE p.priority = :priority
-        ORDER BY p.Id_project, t.Id_tasks
-    ';
+                        SELECT 
+                              p.Id_project,
+                              p.project_name,
+                              p.Id_users,
+                              p.priority_project AS project_priority,
+                              t.Id_tasks,
+                              t.task,
+                              t.priority_task AS task_priority,
+                              t.done,
+                              t.deadline
+                        FROM ppllmm_project p
+                        LEFT JOIN ppllmm_tasks t ON t.Id_project = p.Id_project
+                        WHERE p.priority_project = :priority_project
+                        ORDER BY p.Id_project, t.Id_tasks
+                        ';
 
             try {
                   $stmt = $this->pdo->prepare($select);
-                  $stmt->bindParam(':priority', $priority, PDO::PARAM_STR);
+                  $stmt->bindParam(':priority_project', $priority_project, PDO::PARAM_STR);
                   $stmt->execute();
                   $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -130,7 +120,7 @@ class Project
                                     'Id_project' => $id,
                                     'project_name' => $row['project_name'],
                                     'Id_users' => $row['Id_users'],
-                                    'priority' => $row['project_priority'],
+                                    'priority_project' => $row['project_priority'],
                                     'tasks' => []
                               ];
                         }
@@ -139,7 +129,9 @@ class Project
                                     'Id_tasks' => $row['Id_tasks'],
                                     'task' => $row['task'],
                                     'priority' => $row['task_priority'],
-                                    'done' => $row['done']
+                                    'done' => (bool)$row['done'],
+                                    'deadline' => $row['deadline'] ?? null,
+
                               ];
                         }
                   }

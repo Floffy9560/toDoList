@@ -12,16 +12,21 @@ class Task
       }
 
       // 🔧 Ajouter une tâche à un projet
-      public function addTask($projet_id, $description, $Id_users, $priority = 1)
+      public function addTask($projet_id, $description, $Id_users, $deadline, $priority_task = 1)
       {
-            $sql = 'INSERT INTO `ppllmm_tasks`(`task`, `Id_project`, `Id_users`,`priority`) VALUES (:description, :projet_id, :Id_users, :priority)';
+            $sql = 'INSERT INTO `ppllmm_tasks`(`task`, `Id_project`, `Id_users`,`deadline`,`priority_task`) VALUES (:description, :projet_id, :Id_users,:deadline, :priority_task)';
 
             try {
                   $stmt = $this->pdo->prepare($sql);
                   $stmt->bindParam(':description', $description, PDO::PARAM_STR);
                   $stmt->bindParam(':projet_id', $projet_id, PDO::PARAM_INT);
                   $stmt->bindParam(':Id_users', $Id_users, PDO::PARAM_INT);
-                  $stmt->bindParam(':priority', $priority, PDO::PARAM_INT);
+                  if ($deadline === null) {
+                        $stmt->bindValue(':deadline', null, PDO::PARAM_NULL);
+                  } else {
+                        $stmt->bindValue(':deadline', $deadline, PDO::PARAM_STR);
+                  }
+                  $stmt->bindParam(':priority_task', $priority_task, PDO::PARAM_INT);
                   $stmt->execute();
                   return true;
             } catch (PDOException $e) {
@@ -48,7 +53,7 @@ class Task
       // 📋 Récupérer les tâches d’un projet
       public function getTasksByProject($projet_id)
       {
-            $sql = 'SELECT * FROM ppllmm_tasks WHERE id_project = :projet_id ORDER BY priority ASC';
+            $sql = 'SELECT * FROM ppllmm_tasks WHERE id_project = :projet_id ORDER BY priority_task ASC';
 
             try {
                   $stmt = $this->pdo->prepare($sql);
@@ -104,13 +109,13 @@ class Task
             }
       }
 
-      public function updatePriority($taskId, $priority)
+      public function updatePriority($taskId, $priority_task)
       {
-            $query = "UPDATE ppllmm_tasks SET priority = :priority WHERE Id_tasks = :taskId";
+            $query = "UPDATE ppllmm_tasks SET priority_task = :priority_task WHERE Id_tasks = :taskId";
 
             try {
                   $stmt = $this->pdo->prepare($query);
-                  $stmt->bindParam(':priority', $priority, PDO::PARAM_INT);
+                  $stmt->bindParam(':priority_task', $priority_task, PDO::PARAM_INT);
                   $stmt->bindParam(':taskId', $taskId, PDO::PARAM_INT);
                   return $stmt->execute();
             } catch (PDOException $e) {

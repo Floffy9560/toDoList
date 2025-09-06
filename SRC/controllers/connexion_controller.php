@@ -71,8 +71,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = $e->getMessage();
         }
     }
+
+    // code pour demande de changement de mdp
+    if (!empty($_POST['email_confirmation'])) {
+
+        $userEmail = $_POST['email_confirmation'];
+        $result = $user->sendPasswordResetEmail($userEmail);
+        if ($result === true) {
+            $message_mail_succes = "Un email de réinitialisation a été envoyé.";
+        } else {
+            // Affiche le message d'erreur renvoyé
+            $message_mail_error = $result;
+        }
+    }
 }
 
 render('connexion', false, [
     'error' => $error,
+    'message_mail_succes' => $message_mail_succes ?? "",
+    'message_mail_error' => $message_mail_error ?? "",
 ]);

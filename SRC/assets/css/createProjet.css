@@ -1,45 +1,164 @@
+/* Conteneur général */
 section {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   min-height: calc(100vh - 10rem);
   gap: 50px;
+  /* background-color: #f4f4f4; */
+  padding: 2rem 0;
 }
+
+/* Conteneurs projets et tâches */
+.container_new_project,
 .container_choice {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   gap: 20px;
   width: 100%;
   max-width: 400px;
-  padding: 20px;
-}
-button {
-  font-size: 21px;
+  padding: 1.5em;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
+/* Titres */
+.container_new_project h2,
+.container_choice h2 {
+  font-size: 1.8em;
+  color: #333;
+  margin-bottom: 0.5em;
+}
+
+/* Formulaire */
 form {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  padding: 20px;
-  border: 2px solid yellowgreen;
+  width: 100%;
+  padding: 15px;
   border-radius: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
 }
-input {
-  padding: 8px;
-  background-color: lavender;
-  border-radius: 10px;
-}
+
+/* Inputs et selects */
+input,
 select {
-  padding: 8px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
   background-color: lavender;
-  border-radius: 10px;
-  font-size: 21px;
-}
-input {
+  font-size: 18px;
   font-weight: bold;
-  font-size: 21px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #6c63ff;
+  box-shadow: 0 0 5px rgba(108, 99, 255, 0.3);
+}
+
+/* Radio buttons */
+.container_new_project__priority_radio,
+.task_form__priority {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  width: 100%;
+}
+
+.container_new_project__priority_radio input,
+.task_form__priority input {
+  width: auto;
+}
+.task_form__priority__items,
+.container_new_project__priority_radio__items {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+/* Boutons */
+button,
+.btn-finish {
+  font-size: 18px;
+  padding: 0.7em 1.2em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+/* Boutons principaux (submit) */
+button[type="submit"] {
+  /* background-color: #6c63ff; */
+  /* color: #fff; */
+  background-color: #8dff63;
+}
+
+button[type="submit"]:hover {
+  /* background-color: #5952c6; */
+  background-color: #52c675;
+  transform: translateY(-2px);
+}
+
+/* Boutons secondaires (liens) */
+.btn-finish {
+  display: inline-block;
+  text-align: center;
+  background-color: #ccc;
+  color: #000;
+  text-decoration: none;
+}
+
+.btn-finish:hover {
+  background-color: #bbb;
+}
+
+/* Feedback message -> popup */
+/* .feedback {
+  font-size: 0.9em;
+  color: #444;
+  margin-top: 5px;
+  text-align: center;
+} */
+.popup-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: rgba(50, 50, 50, 0.9);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  z-index: 9999;
+}
+/* Classe active pour l'animation */
+.popup-message.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsivité */
+@media (max-width: 500px) {
+  section {
+    gap: 30px;
+  }
+  .container_new_project,
+  .container_choice {
+    max-width: 90%;
+    padding: 1em;
+  }
 }

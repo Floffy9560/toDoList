@@ -33,21 +33,3 @@ if (isset($_POST['done'])) {
       ]);
       exit;
 }
-
-
-
-// try {
-//       // Connexion PDO
-//       $pdo = new PDO("mysql:host=localhost;dbname=ton_db;charset=utf8", "user", "pass");
-//       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-//       // Met à jour uniquement le champ done
-//       $stmt = $pdo->prepare("UPDATE ppllmm_task SET done = :done WHERE Id_tasks = :taskId");
-//       $stmt->bindParam(':done', $done, PDO::PARAM_INT);
-//       $stmt->bindParam(':taskId', $taskId, PDO::PARAM_INT);
-//       $stmt->execute();
-
-//       echo json_encode(['success' => true]);
-// } catch (PDOException $e) {
-//       echo json_encode(['success' => false, 'message' => $e->getMessage()]);
-// }

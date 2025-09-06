@@ -107,28 +107,6 @@ class User
         return $stmt->fetchColumn(); // retourne l'Id_users ou false
     }
 
-    // public function verifyPseudoAndPassword($pseudo, $password)
-    // {
-    //     $sql = 'SELECT pseudo ,password FROM ppllmm_users WHERE pseudo = :pseudo';
-
-    //     try {
-    //         $stmt = $this->pdo->prepare($sql);
-    //         $stmt->bindParam(':pseudo', $pseudo, PDO::PARAM_STR);
-    //         $stmt->execute();
-    //         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    //         if ($user && password_verify($password, $user['password'])) {
-    //             return true;
-    //         } else {
-    //             return false;
-    //         }
-    //     } catch (PDOException $e) {
-    //         error_log("Erreur SQL : " . $e->getMessage());
-    //         return false;
-    //     }
-    // }
-
-
     public function recordFailedAttempt($pseudo)
     {
         $sql = "UPDATE ppllmm_users
@@ -222,7 +200,7 @@ class User
 
     public function register()
     {
-        $this->token = $this->generateToken(); // Garde une trace du token pour un futur usage (ex. mail)
+        $this->token = $this->generateToken();
 
         $query = $this->pdo->prepare("
         INSERT INTO `ppllmm_users` (`email`, `password`, `pseudo`, `validation_token`) 
@@ -235,5 +213,83 @@ class User
         $query->bindValue(':validation_token', $this->token, PDO::PARAM_STR);
 
         return $query->execute();
+    }
+
+    // *
+    // ** Envoi d'un mail avec token daté pour validation changement de mdp 
+    // ===================================================================== 
+
+    public function sendPasswordResetEmail($userEmail)
+    {
+        // Vérifier que l'email existe
+        $stmt = $this->pdo->prepare("SELECT Id_users FROM ppllmm_users WHERE email = ?");
+        $stmt->execute([$userEmail]);
+        $user = $stmt->fetch();
+        if (!$user) {
+            // Retourner un message d'erreur au lieu de false
+            return "Aucun compte n'est associé à cette adresse e-mail.";
+        }
+
+        // Générer un token sécurisé
+        $token = bin2hex(random_bytes(32));
+        $expires = date('Y-m-d H:i:s', strtotime('+1 hour'));
+
+        // Insérer le token en base
+        $stmt = $this->pdo->prepare(
+            "INSERT INTO ppllmm_password_resets (user_id, token, expires_at) VALUES (:user_id, :token, :expires_at)"
+        );
+
+        // lier les paramètres
+        $stmt->bindValue(':user_id', $user['Id_users'], PDO::PARAM_INT);
+        $stmt->bindValue(':token', $token, PDO::PARAM_STR);
+        $stmt->bindValue(':expires_at', $expires, PDO::PARAM_STR);
+
+        // exécuter la requête
+        $stmt->execute();
+
+        // Envoyer email (exemple simplifié)
+        $resetLink = "http://localhost/reset_password?token=$token";
+        // a utiliser sur un vrai serveur 
+        // mail(
+        //     $userEmail,
+        //     "Réinitialisation mot de passe",
+        //     "Cliquez sur ce lien pour réinitialiser votre mot de passe : $resetLink\nAttention : ce lien expire dans 1 heure."
+        // );
+
+        // test en lien pour le debug 
+        echo "Lien de réinitialisation (debug) : $resetLink";
+
+        return true;
+    }
+
+    public function changePassword($newPasswordHashed, $user_id, $token_id)
+    {
+        // Mettre à jour le mot de passe de l'utilisateur
+        $stmt = $this->pdo->prepare("UPDATE ppllmm_users SET password = :password WHERE Id_users = :Id_users");
+        $stmt->bindValue(':password', $newPasswordHashed, PDO::PARAM_STR);
+        $stmt->bindValue(':Id_users', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Marquer le token comme utilisé
+        $stmt = $this->pdo->prepare("UPDATE ppllmm_password_resets SET used = 1 WHERE id = :id");
+        $stmt->bindValue(':id', $token_id, PDO::PARAM_INT); // ici utiliser l'ID du token
+        $stmt->execute();
+    }
+    public function verifyResetToken($token)
+    {
+        $stmt = $this->pdo->prepare("
+        SELECT * FROM ppllmm_password_resets 
+        WHERE token = :token AND used = 0 AND expires_at > NOW()
+    ");
+
+        // Lier le token à la requête
+        $stmt->bindValue(':token', $token, PDO::PARAM_STR);
+
+        // Exécuter la requête
+        $stmt->execute();
+
+        $reset = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $reset;
     }
 }
