@@ -1,5 +1,5 @@
 <!-- Modal pour ajouter une tâche -->
-<div id="modalTask" class="modal" style="display:none;">
+<div id="modalTask" class="modal">
       <div class="modal-content">
 
             <span class="close">&times;</span>
@@ -8,29 +8,26 @@
 
                   <h2 id="modalProjectName"></h2>
 
-                  <label for="current_project_id"></label>
-                  <input type="text" name="current_project_id" id="current_project_id" value="projetId" placeholder="projetId">
+                  <!-- Champ caché pour un projet existant -->
+                  <input type="hidden" name="project_id" id="project_id">
 
                   <!-- Champ pour un nouveau projet (masqué par défaut) -->
                   <div id="newProjectContainer" style="display:none;">
 
-                        <strong>Utilise un projet excistant : </strong>
-
-                        <select name="project_id" id="projet_id">
-                              <option value="">Choisi un projet :</option>
-
+                        <strong>Utilise un projet existant : </strong>
+                        <select name="project_id_select" id="project_id_select">
+                              <option value="">Choisis un projet :</option>
                               <?php foreach ($projects as $projet): ?>
-                                    <option value="<?= $projet['Id_project'] ?>"><?= htmlspecialchars($projet['project_name']) ?></option>
+                                    <option value="<?= $projet['Id_project'] ?>">
+                                          <?= htmlspecialchars($projet['project_name']) ?>
+                                    </option>
                               <?php endforeach ?>
-
                         </select>
 
-                        <strong>Ou créer en un autre : </strong>
-
-                        <label for="new_project"></label>
+                        <strong>Ou crée un autre : </strong>
                         <input type="text" name="new_project" id="new_project" placeholder="Nom du projet :">
 
-                        <label for="priority_project">Priorité ud projet :</label>
+                        <label for="priority_project">Priorité du projet :</label>
                         <select name="priority_project" id="priority_project" required>
                               <option value="urgent">Urgent</option>
                               <option value="medium">Moyen</option>
@@ -38,7 +35,6 @@
                         </select>
 
                   </div>
-
 
                   <label for="task_name">Nom de la tâche :</label>
                   <input type="text" name="task_name" id="task_name" required>

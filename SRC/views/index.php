@@ -3,6 +3,8 @@
 <!-- Dashboard -->
 <aside class="dashboard">
 
+    <button id="closeDashboard"><i class="bi bi-x-lg"></i></button>
+
     <h2>Dashboard</h2>
 
     <h3>🗂️ Projets</h3>
@@ -31,7 +33,7 @@
         <?php endif; ?>
     </div>
 
-    <a href="/create" class="btn-secondary btn_create_project" title="Créer un nouveau projet"><i class="bi bi-folder-plus"></i></a>
+    <a href="createProject" class="btn_create_project" title="Créer un nouveau projet"><i class="bi bi-folder-plus"></i></a>
 
 
 </aside>
@@ -39,32 +41,24 @@
 <div class="display">
 
     <div class="top">
-        <button type="submit" class="btn_create_project">Nouveau projet/tâche</button>
-    </div>
 
-    <div class="project_category">
+        <div class="top__dashboard">
+            <button class="top__dashboard__btn">Dashboard</button>
+            <a href="createProject" class="btn_create_project" title="Créer un nouveau projet"> <i class="bi bi-folder-plus"></i></a>
+        </div>
 
-        <form action="" class="project_category__form" method="POST">
-            <input type="hidden" name="category" value="all">
+        <div class="top__project_category">
+
             <button type="button" class="btnCategory" data-category="all">Tout</button>
-        </form>
-
-        <form action="" class="project_category__form">
-            <input type="hidden" name="category" value="urgent">
             <button type="button" class="btnCategory" data-category="urgent">Urgent</button>
-        </form>
-
-        <form action="" class="project_category__form">
-            <input type="hidden" name="category" value="medium">
             <button type="button" class="btnCategory" data-category="medium">Moyen</button>
-        </form>
-
-        <form action="" class="project_category__form">
-            <input type="hidden" name="category" value="normal">
             <button type="button" class="btnCategory" data-category="normal">Normal</button>
-        </form>
+
+        </div>
 
     </div>
+
+
 
     <section>
 
@@ -74,7 +68,12 @@
 
                     <div class="cardProject">
 
-                        <h3><?= htmlspecialchars($projet['project_name']) ?></h3>
+                        <div class="cardProject__countTasks">
+                            <h3><?= htmlspecialchars($projet['project_name']) ?></h3>
+                            <span id="count_tasks_<?= $projet['Id_project'] ?>" title="Nombre de tâches">
+                                <?= count($projet['tasks']) ?>
+                            </span>
+                        </div>
 
                         <ul>
                             <?php if (!empty($projet['tasks'])) : ?>
@@ -98,13 +97,21 @@
                                             <div class="currentTask__text">
                                                 <?= htmlspecialchars($task['task']) ?>
                                                 <?php if (!empty($task['deadline'])): ?>
+
                                                     <span
                                                         class="deadline"
                                                         data-deadline="<?= htmlspecialchars($task['deadline']) ?>">
                                                         ⏳ <?= date("d/m/Y", strtotime($task['deadline'])) ?>
                                                     </span>
+
                                                 <?php endif; ?>
                                             </div>
+
+                                        </li>
+
+                                        <div class="formProject__btn_action_popup">
+
+                                            <span class="formProject__btn_action_popup__close"><i class="bi bi-x-lg"></i></span>
 
                                             <div class="priority-group">
                                                 <?php for ($i = 1; $i <= 3; $i++) :
@@ -134,17 +141,21 @@
                                                 <?php endfor; ?>
                                             </div>
 
-                                        </li>
+                                            <div class="action-group">
 
-                                        <div class="formProject__btn_action">
+                                                <input type="hidden" name="taskId" value="<?= $task['Id_tasks'] ?>">
+                                                <input type="hidden" name="doneTask" value="<?= $task['done'] ?>">
+                                                <button type="submit" class="btnCheck"><i class="bi bi-check2-circle"></i></button>
 
-                                            <input type="hidden" name="doneTask" value="<?= $task['done'] ?>">
-                                            <button type="submit" class="btnCheck"><i class="bi bi-check2-circle"></i></button>
 
-                                            <input type="hidden" name="deleteTask" value="<?= $task['Id_tasks'] ?>">
-                                            <button type="submit" class="btnDelete"><i class="bi bi-x"></i></button>
+                                                <input type="hidden" name="deleteTask" value="<?= $task['Id_tasks'] ?>">
+                                                <button type="submit" class="btnDelete"><i class="bi bi-trash3"></i></button>
+
+                                            </div>
 
                                         </div>
+
+                                        <div class="formProject__btn_action"><i class="bi bi-three-dots"></i></div>
 
                                     </form>
 
@@ -154,7 +165,6 @@
                             <?php endif; ?>
 
 
-
                         </ul>
 
                         <form action="" method="GET" class="cardProject__form_finish">
@@ -162,7 +172,7 @@
                             <button id="finish" disabled>Terminé !</button>
                         </form>
 
-                        <a href="#"
+                        <a href=""
                             class="main__btn_create_task"
                             title="Créer une nouvelle tâche"
                             data-projet-id="<?= (int) $projet['Id_project'] ?>"

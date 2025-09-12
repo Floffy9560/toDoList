@@ -1,3 +1,4 @@
+/* 
 section {
   display: flex;
   flex-direction: column;
@@ -5,7 +6,9 @@ section {
   justify-content: center;
   min-height: calc(100vh - 10rem);
   gap: 50px;
+  padding: 2rem 1rem;
 }
+
 .containerAbout {
   display: flex;
   flex-direction: column;
@@ -14,8 +17,63 @@ section {
   color: #1c1c1c;
   padding: 2rem;
   border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  background: radial-gradient(
+    circle,
+    rgba(42, 123, 155, 0.9) 0%,
+    rgba(87, 199, 133, 0.8) 50%,
+    rgba(237, 221, 83, 0.9) 100%
+  );
+}
+
+.containerAbout span {
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.containerAbout p {
+  font-size: clamp(15px, 1.5vw, 18px);
+  line-height: 1.6;
+}
+
+.containerAbout ul {
+  padding-left: 20px;
+  list-style: disc;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.containerAbout ul li {
+  font-size: clamp(14px, 1.4vw, 16px);
+  line-height: 1.5;
+}
+
+.containerAbout ul li strong {
+  color: #1c1c1c;
+} */
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 10rem);
+  gap: 50px;
+  padding: 2rem;
+  background-color: #f0f0f0; /* optionnel : arrière-plan global clair pour la section */
+}
+
+.containerAbout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 700px;
+  color: #1c1c1c; /* texte sombre pour un contraste fort */
+  padding: 2rem;
+  border-radius: 12px;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
-  background: #2a7b9b;
   background: radial-gradient(
     circle,
     rgba(42, 123, 155, 1) 0%,
@@ -23,10 +81,29 @@ section {
     rgba(237, 221, 83, 1) 100%
   );
 }
-span {
+
+.containerAbout span {
   font-size: 21px;
   font-weight: bold;
+  color: #1c1c1c; /* même texte foncé pour le titre */
 }
-p {
+
+.containerAbout p {
   font-size: clamp(15px, 4vw, 18px);
+  line-height: 1.6;
+  color: #1c1c1c; /* texte lisible sur le fond */
+}
+
+.containerAbout ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  color: #1c1c1c; /* même couleur sombre */
+}
+
+.containerAbout ul li {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+.containerAbout a {
+  color: navy;
 }

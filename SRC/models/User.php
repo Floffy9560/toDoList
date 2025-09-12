@@ -168,6 +168,15 @@ class User
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getUserById($id)
+    {
+        $sql = "SELECT * FROM ppllmm_users WHERE Id_users = :id LIMIT 1";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     // *
     // ** vérification mail
     // =====================
@@ -248,16 +257,16 @@ class User
         $stmt->execute();
 
         // Envoyer email (exemple simplifié)
-        $resetLink = "http://localhost/reset_password?token=$token";
+        $resetLink = "http://f-l-o-x.alwaysdata.net/reset_password?token=$token";
         // a utiliser sur un vrai serveur 
-        // mail(
-        //     $userEmail,
-        //     "Réinitialisation mot de passe",
-        //     "Cliquez sur ce lien pour réinitialiser votre mot de passe : $resetLink\nAttention : ce lien expire dans 1 heure."
-        // );
+        mail(
+            $userEmail,
+            "Réinitialisation mot de passe",
+            "Cliquez sur ce lien pour réinitialiser votre mot de passe : $resetLink\nAttention : ce lien expire dans 1 heure."
+        );
 
         // test en lien pour le debug 
-        echo "Lien de réinitialisation (debug) : $resetLink";
+        // echo "Lien de réinitialisation (debug) : $resetLink";
 
         return true;
     }
@@ -291,5 +300,40 @@ class User
         $reset = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return $reset;
+    }
+
+    //
+    // ** Pour Google
+    // ==============
+    public function getUserByGoogleId($googleId)
+    {
+        $sql = "SELECT * FROM ppllmm_users WHERE google_id = :google_id LIMIT 1";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':google_id' => $googleId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function registerWithGoogle($googleId, $email, $pseudo)
+    {
+        $query = $this->pdo->prepare("
+        INSERT INTO ppllmm_users (google_id, email, pseudo, is_verified)
+        VALUES (:google_id, :email, :pseudo, 1)
+    ");
+
+        $query->bindValue(':google_id', $googleId, PDO::PARAM_STR);
+        $query->bindValue(':email', $email, PDO::PARAM_STR);
+        $query->bindValue(':pseudo', $pseudo, PDO::PARAM_STR);
+
+        $query->execute();
+
+        return $this->pdo->lastInsertId();
+    }
+
+    public function getUserByEmail($email)
+    {
+        $sql = "SELECT * FROM ppllmm_users WHERE email = :email LIMIT 1";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':email' => $email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

@@ -24,9 +24,11 @@ if (isset($_POST['deleteTask'])) {
       exit;
 }
 
-if (isset($_POST['done'])) {
+if (isset($_POST['done']) && isset($_POST['taskId'])) {
       $done = ($_POST['done'] === "1") ? 1 : 0;
+      $taskId = (int)$_POST['taskId'];
       $updated = $taskModel->markTaskAsDone($taskId, $done);
+
       echo json_encode([
             'success' => $updated,
             'message' => $updated ? 'Statut mis à jour' : 'Erreur lors de la mise à jour'

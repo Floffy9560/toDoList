@@ -9,18 +9,20 @@
         <p><strong>Nom du projet :</strong> Gestionnaire de Tâches</p>
 
         <p>
-            Ce projet a été créé pour permettre aux utilisateurs de mieux organiser leurs projets au quotidien.
-            Il s'agit d'une application PHP orientée objet, avec un système de gestion de session et de base de données.
-            Développé dans le cadre d’un projet personnel afin de me perfectionner avec la POO et js ajax.
+            Ce projet a été conçu pour offrir aux utilisateurs une solution complète afin d'organiser efficacement leurs projets et tâches quotidiennes.
+            Il s'agit d'une application PHP orientée objet, intégrant un système de gestion de sessions et de base de données.
+            Développé dans le cadre d’un projet personnel, il m'a permis de me perfectionner en programmation orientée objet et en utilisation de JavaScript avec AJAX.
         </p>
 
-        <p><strong>Technologies utilisées</strong></p>
+        <p><strong>Stack technique :</strong></p>
         <ul>
-            <li>PHP orienté objet</li>
-            <li>MySQL</li>
-            <li>HTML5 / CSS3 (sans framework lourd)</li>
-            <li>JavaScript (avec AJAX pour certaines interactions)</li>
-            <li>Bootstrap Icons pour les icônes</li>
+            <li><strong>PHP :</strong> logique serveur, gestion des sessions utilisateurs et communication sécurisée avec la base de données.</li>
+            <li><strong>MySQL :</strong> base de données relationnelle pour gérer projets, tâches et utilisateurs, avec des requêtes optimisées.</li>
+            <li><strong>HTML5 :</strong> structure sémantique et accessible, facilitant la lecture et la navigation.</li>
+            <li><strong>CSS3 :</strong> mise en page responsive avec Flexbox et Grid, utilisation de dégradés et d’une identité visuelle cohérente.</li>
+            <li><strong>JavaScript :</strong> utilisation d’AJAX pour charger et mettre à jour les données sans rechargement de page,
+                et délégation d’événements pour gérer efficacement les interactions dynamiques.</li>
+            <li><strong>Bootstrap Icons :</strong> intégration d’icônes modernes et légères pour améliorer l’expérience utilisateur.</li>
         </ul>
 
         <p>

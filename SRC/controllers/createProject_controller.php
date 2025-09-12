@@ -5,8 +5,6 @@ require_once 'models/Tasks.php';
 
 $Id_users = $_SESSION['idUser'];
 
-var_dump($_POST);
-
 
 // 
 // == Ajouter un projet / Add a project
@@ -35,7 +33,7 @@ if (!empty($_POST['projet_id']) && !empty($_POST['description'])) {
       $projet_id = $_POST['projet_id'];
       $description = $_POST['description'];
       $priority_task = (int)$_POST['priority_task'];
-      $deadline = $_POST['deadline'];
+      $deadline = !empty($_POST['deadline']) ? $_POST['deadline'] : null;
 
       $task = new Task();
       $success = $task->addTask($projet_id, $description, $Id_users, $deadline, $priority_task);

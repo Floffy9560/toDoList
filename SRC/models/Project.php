@@ -34,10 +34,10 @@ class Project
             p.Id_project,
             p.project_name,
             p.Id_users,
-            p.priority_project AS project_priority,
+            p.priority_project, 
             t.Id_tasks,
             t.task,
-            t.priority_task AS task_priority,
+            t.priority_task, 
             t.done,
             t.deadline
         FROM ppllmm_project p
@@ -57,23 +57,25 @@ class Project
                   foreach ($rows as $row) {
                         $projId = $row['Id_project'];
 
+                        // Initialisation du projet si pas encore présent
                         if (!isset($projects[$projId])) {
                               $projects[$projId] = [
                                     'Id_project' => $row['Id_project'],
                                     'project_name' => $row['project_name'],
                                     'Id_users' => $row['Id_users'],
-                                    'priority' => $row['project_priority'],
+                                    'priority_project' => $row['priority_project'],
                                     'tasks' => []
                               ];
                         }
 
+                        // Ajout d'une tâche si elle existe
                         if (!empty($row['Id_tasks'])) {
                               $projects[$projId]['tasks'][] = [
                                     'Id_tasks' => $row['Id_tasks'],
                                     'task' => $row['task'],
-                                    'priority' => $row['task_priority'],
+                                    'priority_task' => $row['priority_task'],
                                     'done' => (bool)$row['done'],
-                                    'deadline' => $row['deadline'] ?? null // ← ajouté
+                                    'deadline' => $row['deadline'] ?? null
                               ];
                         }
                   }
@@ -94,10 +96,10 @@ class Project
                               p.Id_project,
                               p.project_name,
                               p.Id_users,
-                              p.priority_project AS project_priority,
+                              p.priority_project,
                               t.Id_tasks,
                               t.task,
-                              t.priority_task AS task_priority,
+                              t.priority_task,
                               t.done,
                               t.deadline
                         FROM ppllmm_project p
@@ -120,7 +122,7 @@ class Project
                                     'Id_project' => $id,
                                     'project_name' => $row['project_name'],
                                     'Id_users' => $row['Id_users'],
-                                    'priority_project' => $row['project_priority'],
+                                    'priority_project' => $row['priority_project'],
                                     'tasks' => []
                               ];
                         }
@@ -128,7 +130,7 @@ class Project
                               $projects[$id]['tasks'][] = [
                                     'Id_tasks' => $row['Id_tasks'],
                                     'task' => $row['task'],
-                                    'priority' => $row['task_priority'],
+                                    'priority_task' => $row['priority_task'],
                                     'done' => (bool)$row['done'],
                                     'deadline' => $row['deadline'] ?? null,
 
@@ -153,7 +155,7 @@ class Project
                   $stmt = $this->pdo->prepare($delete);
                   $stmt->bindParam(':projectId', $projectId, PDO::PARAM_INT);
                   $stmt->execute();
-                  return true; // retourne true si tout s'est bien passé
+                  return true;
             } catch (PDOException $e) {
                   error_log("Erreur lors de la suppression du projet : " . $e->getMessage());
                   return false;

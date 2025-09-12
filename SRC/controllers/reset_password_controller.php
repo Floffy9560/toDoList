@@ -19,8 +19,8 @@ $reset = $user->verifyResetToken($token);
 if (!$reset) {
     $error_token = "Token invalide ou expiré. Veuillez demander une nouvelle réinitialisation.";
 }
-$token_id = $reset['id'];
-$user_id = $reset['user_id'];
+$token_id = $reset['id'] ?? '';
+$user_id = $reset['user_id'] ?? '';
 
 // reinitialiser le mdp
 

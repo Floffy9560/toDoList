@@ -8,29 +8,44 @@
   background-color: #f0f2f5;
 }
 
-/* ===== Conteneur général ===== */
+/* Conteneur général */
 #calendar-container {
   width: 95%;
   max-width: 1400px;
   margin: 2rem auto;
 }
+
+/* Barre de navigation des mois */
 .calendar-nav {
   display: flex;
   align-items: center;
   gap: 20px;
   padding: 8px;
   border-radius: 10px;
-  background-color: #2ecc71;
+  background-color: #34495e; /* bleu foncé harmonisé avec header */
+  color: #eee8aa;
 }
 #prev-month,
 #next-month {
-  background-color: #26b260;
+  background-color: transparent;
+  font-size: larger;
+  display: flex;
+  align-items: center;
+  color: #17a2b8; /* turquoise accent */
 }
+#current-month {
+  font-size: larger;
+  font-weight: bold;
+  color: #eee8aa;
+}
+
+/* Calendrier */
 .calendar-table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
 }
+
 .calendar-table th:first-child {
   border-radius: 8px 0 0 0;
 }
@@ -38,18 +53,21 @@
   border-radius: 0 8px 0 0;
 }
 .calendar-table th {
-  background-color: #8dff63;
+  background-color: #2c3e50; /* header blue */
+  color: #eee8aa;
   padding: 10px;
 }
+
 .empty_day {
   width: 100%;
   height: 100%;
-  background-color: #aaa !important;
+  background-color: #ccc !important;
 }
+
 .calendar-table td {
   height: 120px;
   vertical-align: top;
-  background-color: #f9f9f9;
+  background-color: #ffffff; /* plus clair que le header */
   border: 1px solid #ddd;
   padding: 5px;
   position: relative;
@@ -65,9 +83,12 @@
 .day-number {
   font-weight: bold;
   margin-bottom: 5px;
+  color: #2c3e50; /* cohérent avec header */
 }
 
+/* Tâches */
 .calendar-task {
+  position: relative;
   font-size: 0.85rem;
   padding: 5px 7px;
   margin-bottom: 3px;
@@ -77,21 +98,24 @@
 }
 
 .priority-red {
-  background-color: #e74c3c;
+  background-color: #f4a6a6;
 }
 .priority-orange {
-  background-color: #e67e22;
+  background-color: #ffd6a5;
 }
 .priority-green {
-  background-color: #2ecc71;
+  background-color: #a8e6a3;
 }
+
 .done {
   opacity: 0.6;
   text-decoration: line-through;
 }
+
+/* Nouveau projet */
 #newProjectContainer {
-  display: none; /* reste caché par défaut */
-  color: gainsboro;
+  display: none;
+  color: #555;
 }
 
 #newProjectContainer strong {
@@ -108,14 +132,15 @@
   margin-bottom: 12px;
   border-radius: 5px;
   font-size: 0.95rem;
+  border: 1px solid #ccc;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 #newProjectContainer select:focus,
 #newProjectContainer input[type="text"]:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+  border-color: #17a2b8;
+  box-shadow: 0 0 5px rgba(23, 162, 184, 0.4);
 }
 
 #newProjectContainer input::placeholder {
@@ -123,7 +148,29 @@
   font-style: italic;
 }
 
-/* Style pour les messages de succès */
+/* Bouton delete tâche */
+.btn-delete-task {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: #2c3e50;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  line-height: 18px;
+  text-align: center;
+  padding: 0;
+}
+
+.btn-delete-task:hover {
+  background: #e74c3c;
+}
+
+/* Messages de succès */
 .alert-success {
   background-color: #d4edda;
   color: #155724;
@@ -144,6 +191,7 @@
   pointer-events: none;
 }
 
+/* Responsive */
 @media (max-width: 768px) {
   .calendar-table td {
     height: 90px;

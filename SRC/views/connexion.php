@@ -1,5 +1,7 @@
 <?php ob_start() ?>
 
+<div id="welcomeMessage" style="display:none; padding:10px; background:#e6ffe6; border:1px solid #00cc66; border-radius:5px; margin:10px 0; font-family:sans-serif;"></div>
+
 <section>
 
     <?php
@@ -57,6 +59,14 @@
 
         </form>
         <small id="forget_password" style="cursor: pointer;">Mot de passe oublié</small>
+
+        <div id="g_id_onload"
+            data-client_id="82809045876-339cp44q6u2iqj0v7mgoddeaq15gop8f.apps.googleusercontent.com"
+            data-callback="handleCredentialResponse"
+            data-auto_prompt="false">
+        </div>
+
+        <div class="g_id_signin" style="display:none;"></div>
 
     <?php else : ?>
         <h2>Vous êtes déjà connecté avec le pseudo : <?= htmlspecialchars($_SESSION['pseudo']); ?> </h2>

@@ -5,9 +5,9 @@
       <h1>Calendrier des tâches</h1>
 
       <div class="calendar-nav">
-            <button id="prev-month">&lt; Mois précédent</button>
+            <button id="prev-month"><i class="bi bi-caret-left"></i> Mois précédent</button>
             <span id="current-month"></span>
-            <button id="next-month">Mois suivant &gt;</button>
+            <button id="next-month">Mois suivant <i class="bi bi-caret-right"></i></button>
       </div>
 
       <div id="calendar-container"></div>

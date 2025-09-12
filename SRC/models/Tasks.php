@@ -28,7 +28,7 @@ class Task
                   }
                   $stmt->bindParam(':priority_task', $priority_task, PDO::PARAM_INT);
                   $stmt->execute();
-                  return true;
+                  return (int) $this->pdo->lastInsertId();
             } catch (PDOException $e) {
                   echo "Erreur lors de l'ajout de la tâche : " . $e->getMessage();
                   return false;
@@ -66,13 +66,27 @@ class Task
             }
       }
 
-      public function markTaskAsDone($taskText)
+      // public function markTaskAsDone($taskText)
+      // {
+      //       $query = "UPDATE ppllmm_tasks SET done = 1 WHERE task = :task";
+
+      //       try {
+      //             $stmt = $this->pdo->prepare($query);
+      //             $stmt->bindParam(':task', $taskText, PDO::PARAM_STR);
+      //             return $stmt->execute();
+      //       } catch (PDOException $e) {
+      //             echo "Erreur lors de la mise à jour de la tâche : " . $e->getMessage();
+      //             return false;
+      //       }
+      // }
+      public function markTaskAsDone($taskId, $done)
       {
-            $query = "UPDATE ppllmm_tasks SET done = 1 WHERE task = :task";
+            $query = "UPDATE ppllmm_tasks SET done = :done WHERE Id_tasks = :taskId";
 
             try {
                   $stmt = $this->pdo->prepare($query);
-                  $stmt->bindParam(':task', $taskText, PDO::PARAM_STR);
+                  $stmt->bindParam(':done', $done, PDO::PARAM_INT);
+                  $stmt->bindParam(':taskId', $taskId, PDO::PARAM_INT);
                   return $stmt->execute();
             } catch (PDOException $e) {
                   echo "Erreur lors de la mise à jour de la tâche : " . $e->getMessage();
@@ -122,5 +136,41 @@ class Task
                   echo "Erreur lors de la mise à jour de la priorité : " . $e->getMessage();
                   return false;
             }
+      }
+
+      public function updateDeadline($taskId, $deadline)
+      {
+            $sql = "UPDATE ppllmm_tasks SET deadline = :deadline WHERE Id_tasks = :taskId";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':deadline', $deadline);
+            $stmt->bindParam(':taskId', $taskId, PDO::PARAM_INT);
+            return $stmt->execute();
+      }
+
+      // Récupère toutes les tâches avec une deadline future
+      public function getAllTasksWithDeadline()
+      {
+            $stmt = $this->pdo->prepare("
+        SELECT Id_tasks, task, deadline, Id_users, reminderSent
+        FROM ppllmm_tasks
+        WHERE deadline >= CURDATE()
+    ");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+      }
+
+      // Met à jour le champ reminderSent (JSON) pour une tâche
+      public function updateReminderSent($taskId, $reminderJson)
+      {
+            $stmt = $this->pdo->prepare("
+        UPDATE ppllmm_tasks
+        SET reminderSent = :reminderSent
+        WHERE Id_tasks = :taskId
+    ");
+            $stmt->execute([
+                  ':reminderSent' => $reminderJson,
+                  ':taskId' => $taskId
+            ]);
+            return $stmt->rowCount() > 0;
       }
 }

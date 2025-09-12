@@ -23,3 +23,31 @@ forget_password.addEventListener("click", function () {
 close_forget.addEventListener("click", function () {
   form_forget_password.classList.remove("active");
 });
+
+//
+// ** authentification Google
+// ==========================
+
+function handleCredentialResponse(response) {
+  // Envoi du token à ton backend via AJAX
+  fetch("API/google/google-login.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ credential: response.credential }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        Swal.fire({
+          title: "Connexion réussie",
+          text: "Bienvenue " + data.user.name + " 🎉",
+          icon: "success",
+          confirmButtonText: "Allons-y !",
+        }).then(() => {
+          window.location.href = "/";
+        });
+      } else {
+        Swal.fire("Erreur", data.message, "error");
+      }
+    });
+}
